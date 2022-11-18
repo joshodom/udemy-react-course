@@ -5,6 +5,7 @@ const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
+  const [showForm, setShowForm] = useState(false);
   //const [userInput, setUserInput] = useState({enteredTitle: '', enteredAmount: '', enteredDate: ''})
 
   const titleChangeHandler = (event) => {
@@ -26,13 +27,31 @@ const ExpenseForm = (props) => {
       amount: enteredAmount,
       date: new Date(enteredDate),
     };
-    console.log("expenseData in Expenseform ");
-    console.dir(expenseData);
+
     props.onSaveExpenseData(expenseData);
     setEnteredTitle("");
     setEnteredAmount("");
     setEnteredDate("");
+    setShowForm(false);
   };
+
+  const addExpenseOnClick = () => {
+    setShowForm(true);
+  };
+
+  const onCancelClickHandler = () => {
+    setShowForm(false);
+  };
+
+  if (showForm === false) {
+    return (
+      <div className="new-expense__hide-form">
+        <button type="button" onClick={addExpenseOnClick}>
+          Add Expense
+        </button>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={submitHandler}>
@@ -59,7 +78,7 @@ const ExpenseForm = (props) => {
           <label>Date</label>
           <input
             type="date"
-            min="2022-01-01"
+            min="2019-01-01"
             max="2025-12-31"
             value={enteredDate}
             onChange={dateChangeHandler}
@@ -67,7 +86,10 @@ const ExpenseForm = (props) => {
         </div>
       </div>
       <div className="new-expense__actions">
-        <button type="submit">Add</button>
+        <button type="cancel" onClick={onCancelClickHandler}>
+          Cancel
+        </button>
+        <button type="submit">Add Expense</button>
       </div>
     </form>
   );
